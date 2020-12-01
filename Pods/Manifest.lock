@@ -1,0 +1,24 @@
+PODS:
+  - FoldingCell (5.0.2)
+  - SnapKit (5.0.1)
+  - Then (2.7.0)
+
+DEPENDENCIES:
+  - FoldingCell
+  - SnapKit
+  - Then
+
+SPEC REPOS:
+  trunk:
+    - FoldingCell
+    - SnapKit
+    - Then
+
+SPEC CHECKSUMS:
+  FoldingCell: f92eb5fb9842319e7cd08c71533c98408b785099
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  Then: acfe0be7e98221c6204e12f8161459606d5d822d
+
+PODFILE CHECKSUM: c1347b68b2a57211a6de41ab651252872bc5936c
+
+COCOAPODS: 1.10.0
