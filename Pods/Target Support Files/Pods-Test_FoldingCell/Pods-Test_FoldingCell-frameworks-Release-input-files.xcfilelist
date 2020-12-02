@@ -1,4 +1,5 @@
 ${PODS_ROOT}/Target Support Files/Pods-Test_FoldingCell/Pods-Test_FoldingCell-frameworks.sh
+${BUILT_PRODUCTS_DIR}/EasyPeasy/EasyPeasy.framework
 ${BUILT_PRODUCTS_DIR}/FoldingCell/FoldingCell.framework
 ${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework
 ${BUILT_PRODUCTS_DIR}/Then/Then.framework

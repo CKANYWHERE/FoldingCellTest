@@ -7,6 +7,7 @@ target 'Test_FoldingCell' do
   pod 'FoldingCell'
   pod 'SnapKit'
   pod 'Then'
+  pod 'EasyPeasy'
   # Pods for Test_FoldingCell
 
 end

@@ -9,63 +9,47 @@ import UIKit
 import FoldingCell
 
 class TestTableController: UITableViewController {
-    
-    enum Const {
-        static let closeCellHeight: CGFloat = 100
-        static let openCellHeight: CGFloat = 200
-        static let rowsCount = 10
-    }
-    
-    var cellHeights: [CGFloat] = []
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setup()
-    }
-
-    private func setup() {
-        cellHeights = Array(repeating: Const.closeCellHeight, count: Const.rowsCount)
-        tableView.estimatedRowHeight = Const.closeCellHeight
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.register(TestCell.self, forCellReuseIdentifier: "testCell")
-    }
+  
+  // MARK: - Const
+  let closeHeight: CGFloat = 60
+  let openHeight: CGFloat = 166
+  var itemHeight = [CGFloat](repeating: 100, count: 10)
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    self.tableView.backgroundColor = .lightGray
+    registerCell() // register UITableViewCell to use this cell in UITableView Reuse pool
+  }
 }
 
+// MARK: Helpers
 extension TestTableController {
+  
+  private func registerCell() {
+    tableView.register(TestFoldingCell.self, forCellReuseIdentifier: "DemoFoldingCell")
+  }
+  
+}
 
-    override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        return 10
-    }
-
-    override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard case let cell as TestCell = cell else {
-            return
-        }
-
-        cell.backgroundColor = .clear
-        if cellHeights[indexPath.row] == Const.closeCellHeight {
-            cell.unfold(false, animated: false, completion: nil)
-        } else {
-            cell.unfold(true, animated: false, completion: nil)
-        }
-
-        cell.lblIntForeGround.text = "1"
-        cell.lblIntContainer.text = "1"
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "testCell", for: indexPath) as! FoldingCell
-        let durations: [TimeInterval] = [0.26, 0.2, 0.2]
-        cell.durationsForExpandedState = durations
-        cell.durationsForCollapsedState = durations
-        return cell
-    }
-
-    override func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return cellHeights[indexPath.row]
-    }
-
+// MARK: - Table view data source
+extension TestTableController {
+  
+  // set number of rows in each section
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return itemHeight.count
+  }
+  
+  // cell for row at index path.
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: "DemoFoldingCell", for: indexPath) as! TestFoldingCell
+    
+    return cell
+  }
+  
+  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return itemHeight[indexPath.row]
+  }
+  
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         let cell = tableView.cellForRow(at: indexPath) as! FoldingCell
@@ -75,13 +59,13 @@ extension TestTableController {
         }
 
         var duration = 0.0
-        let cellIsCollapsed = cellHeights[indexPath.row] == Const.closeCellHeight
-        if cellIsCollapsed {
-            cellHeights[indexPath.row] = Const.openCellHeight
+        let cellIsCollapsed = itemHeight[indexPath.row] == closeHeight
+        if  cellIsCollapsed {
+            itemHeight[indexPath.row] = openHeight
             cell.unfold(true, animated: true, completion: nil)
             duration = 0.5
         } else {
-            cellHeights[indexPath.row] = Const.closeCellHeight
+            itemHeight[indexPath.row] = closeHeight
             cell.unfold(false, animated: true, completion: nil)
             duration = 0.8
         }
@@ -89,9 +73,11 @@ extension TestTableController {
         UIView.animate(withDuration: duration, delay: 0, options: .curveEaseOut, animations: { () -> Void in
             tableView.beginUpdates()
             tableView.endUpdates()
+            
             if cell.frame.maxY > tableView.frame.maxY {
                 tableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.bottom, animated: true)
             }
         }, completion: nil)
     }
+  
 }
